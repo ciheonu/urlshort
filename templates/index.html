@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Shorten Your URL</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+    }
+
+    .navbar {
+      height: 80px;
+      background-color: crimson;
+    }
+
+    p {
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      padding: 20px;
+      font-size: 30px;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: 600px;
+    }
+
+    span {
+      color: springgreen;
+      font-style: oblique;
+    }
+    .container-sm {
+      height: 300px;
+      background-color: tomato;
+      width: 60%;
+      border-radius: 5px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 4em;
+    }
+
+    legend {
+      color: white !important;
+      text-align: center;
+      font-size: 200% !important;
+      font-weight: 800 !important;
+      font-family: -apple-system !important;
+    }
+    .url {
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 3em;
+    }
+    input {
+      background-color: whitesmoke;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 42px;
+      width: 90%;
+      height: 42px;
+      border: 1px #ccc;
+      border-radius: 5px;
+      position: relative;
+      display: block;
+      outline: none;
+      overflow: hidden;
+      padding-left: 10px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    input[type="text"]:focus {
+      background-color: lightblue;
+      border-color: #719ece;
+      box-shadow: 0 0 10px #719ece;
+    }
+
+    .btndiv {
+      width: 40%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    .btn {
+      background-color: slateblue !important;
+      border-radius: 10px !important;
+      font-size: 120% !important;
+      font-weight: bolder;
+      font-family: -apple-system !important;
+      margin-top: 1em !important;
+      padding: 0.5em;
+      width: 100%;
+      color: white;
+    }
+    .final {
+      margin-top: 1em;
+      width: 50%;
+      background-color: tomato;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .final h2 {
+      font-size: 15px;
+      color: wheat;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <nav class="navbar">
+      <p>We<span>Bro</span>Pages</p>
+    </nav>
+
+    <div class="container-sm">
+      <form id="post-form">
+        {% csrf_token %}
+        <legend>URL Shortner</legend>
+        <div class="url">
+          <input
+            type="url"
+            name="link"
+            id="link"
+            placeholder="Paste long url and shorten it"
+            required
+          />
+        </div>
+        <div class="btndiv">
+          <button
+            type="submit"
+            id="submit"
+            name="submit"
+            class="btn btn-primary"
+          >
+            Shorten
+          </button>
+        </div>
+      </form>
+      <div class="final">
+        <h2></h2>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(document).on("submit", "#post-form", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+          type: "POST",
+          url: "/create",
+          data: {
+            link: $("#link").val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          },
+          success: function (data) {
+            $("h2").html("localhost:8000/" + data);
+          },
+        });
+      });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
